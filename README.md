@@ -1,7 +1,11 @@
-## Evolutionary Parameter Grid
+# Evolutionary Parameter Grid
+![](https://img.shields.io/pypi/v/EvolutionaryParameterGrid)
+
 This package is a general combinatorial optimization problem solver. Just as the combinatorial optimization solver in the "Scikit-learn" package, this package can also be used in parameter searching, feature selection, or even neural architecture search, as long as the parameter grid is well designed. However, in contrast to the parameter grid which uses the exhaustive search method, this package searches the search space based on an intelligent algorithm, genetic algorithm. Based on this algorithm, the search space can be searched efficiently. 
  
 There are a lot of hyper-parameter tuning packages based on the evolutionary algorithm. However, few of them can be used as a general combinatorial optimization solver. Moreover, most of those algorithms do not consider eliminating repetitive proposals, which may lead to cost a lot of computation resources on the same search space. Therefore, in this package, we propose a general solver based on the idea of parameter grid, with the use of a search history memory module, to solve those problems.
+
+[Here](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/EAGrid_ParameterTuning.ipynb) is an example of the evolutionary parameter grid on the hyper-parameter search algorithm.
 
 ## Usage Example
 Example of usage:
