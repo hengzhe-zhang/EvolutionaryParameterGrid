@@ -7,6 +7,12 @@ There are a lot of hyper-parameter tuning packages based on the evolutionary alg
 
 [Here](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/EAGrid_ParameterTuning.ipynb) is an example of the evolutionary parameter grid on the hyper-parameter search algorithm.
 
+## Install
+To install the library use pip:
+> pip install EvolutionaryParameterGrid
+
+or clone the repo and just type the following on your shell:
+> python setup.py install
 ## Usage Example
 Example of usage:
 ```python
