@@ -5,7 +5,7 @@ from sklearn.datasets import load_boston
 from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeRegressor
 
-from EvolutionaryParameterGrid import EAParameterGrid
+from evolutionary_grid.EvolutionaryParameterGrid import EAParameterGrid
 
 random.seed(0)
 np.random.seed(0)

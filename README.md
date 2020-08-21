@@ -21,7 +21,7 @@ from sklearn.datasets import load_boston
 from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeRegressor
 
-from EvolutionaryParameterGrid import EAParameterGrid
+from evolutionary_grid.EvolutionaryParameterGrid import EAParameterGrid
 
 X, y = load_boston(return_X_y=True)
 param_grid = {

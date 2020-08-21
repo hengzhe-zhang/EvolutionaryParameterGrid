@@ -1,7 +1,7 @@
 import random
 import unittest
 
-from EvolutionaryParameterGrid import EAParameterGrid
+from evolutionary_grid.EvolutionaryParameterGrid import EAParameterGrid
 
 
 class TestEvolutionarySearch(unittest.TestCase):
