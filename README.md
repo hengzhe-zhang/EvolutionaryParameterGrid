@@ -5,7 +5,17 @@ This package is a general combinatorial optimization problem solver. Just as the
  
 There are a lot of hyper-parameter tuning packages based on the evolutionary algorithm. However, few of them can be used as a general combinatorial optimization solver. Moreover, most of those algorithms do not consider eliminating repetitive proposals, which may lead to cost a lot of computation resources on the same search space. Therefore, in this package, we propose a general solver based on the idea of parameter grid, with the use of a search history memory module, to solve those problems.
 
-[Here](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/EAGrid_ParameterTuning.ipynb) is an example of the evolutionary parameter grid on the hyper-parameter search algorithm.
+## Tutorial
+A getting started example is presented in the Jupyter notebook [Hyper-parameter Search](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/tutorial/EAGrid_ParameterTuning.ipynb), which uses the evolutionary parameter grid to search for the appropriate parameter of decision tree. More examples are listed in the following:
+
+Tutorial:
+* [Hyper-parameter Search](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/tutorial/EAGrid_ParameterTuning.ipynb)
+* [Feature Selection](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/tutorial/EAGrid_FeatureSelection.ipynb)
+
+Advanced usage:
+* [Time restriction](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/tutorial/EAGrid_AdvancedUsage.ipynb)
+* [Incremental Evolution](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/tutorial/EAGrid_AdvancedUsage.ipynb)
+* [Multiprocessor Support](https://github.com/zhenlingcn/EvolutionaryParameterGrid/blob/master/tutorial/EAGrid_AdvancedUsage.ipynb)
 
 ## Install
 To install the library use pip:

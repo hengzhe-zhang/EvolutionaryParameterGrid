@@ -26,6 +26,19 @@ class EAParameterGrid():
     def __init__(self, generation=50, pop_size=50, cxpb=0.5, mutpb=0.2, tournament_size=10, skip_evaluated=True,
                  halloffame_size=1, batch_evaluate=False,
                  verbose=__debug__):
+        """
+        EA parameter grid initialization
+
+        :param generation: Max number of generations to be evolved
+        :param pop_size: Population size of genetic algorithm
+        :param cxpb: Probability of gene mutation in chromosome
+        :param mutpb: Probability of gene swap between two chromosomes
+        :param tournament_size: Size of tournament for selection stage of genetic algorithm
+        :param skip_evaluated: Skip repetitive individuals
+        :param halloffame_size: Max number of history best individuals to be saved
+        :param batch_evaluate: Evaluate individuals in parallel
+        :param verbose: Controls the verbosity: the higher, the more messages.
+        """
         self.cxpb = cxpb
         self.mutpb = mutpb
         self.verbose = verbose
@@ -44,6 +57,13 @@ class EAParameterGrid():
         self.stats.register("std", numpy.std)
         self.stats.register("min", numpy.min)
         self.stats.register("max", numpy.max)
+
+        if hasattr(creator, 'FitnessMax'):
+            del creator.FitnessMax
+        if hasattr(creator, 'Individual'):
+            del creator.Individual
+        creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+        creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMax)
 
     def set_fitness(self, current_fitness):
         self.current_fitness = current_fitness
@@ -67,9 +87,6 @@ class EAParameterGrid():
         self.parameter_grid = parameter_grid
         self.names = parameter_grid.keys()
         maxints = [len(possible_values) - 1 for possible_values in parameter_grid.values()]
-
-        creator.create("FitnessMax", base.Fitness, weights=(1.0,))
-        creator.create("Individual", array.array, typecode='b', fitness=creator.FitnessMax)
 
         toolbox = base.Toolbox()
 
