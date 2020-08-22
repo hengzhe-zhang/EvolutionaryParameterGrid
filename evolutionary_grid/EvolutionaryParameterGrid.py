@@ -32,11 +32,12 @@ class EAParameterGrid():
         self.tournament_size = tournament_size
         self.generation = generation
         self.pop_size = pop_size
-        self.current_fitness = 0
+        self.current_fitness = None
         self.skip_evaluated = skip_evaluated
         self.history_dict = dict()
         self.halloffame = tools.HallOfFame(halloffame_size)
         self.batch_evaluate = batch_evaluate
+        self.names = dict()
 
         self.stats = tools.Statistics(lambda ind: ind.fitness.values)
         self.stats.register("avg", numpy.mean)
@@ -47,9 +48,9 @@ class EAParameterGrid():
     def set_fitness(self, current_fitness):
         self.current_fitness = current_fitness
 
-    def _convert_individual_to_dict(self, names, individual):
+    def _convert_individual_to_dict(self, individual):
         final_dict = {}
-        for k, v in zip(names, list(individual)):
+        for k, v in zip(self.names, list(individual)):
             final_dict[k] = self.parameter_grid[k][v]
         return final_dict
 
@@ -59,9 +60,12 @@ class EAParameterGrid():
         else:
             return False
 
+    def best_individuals(self):
+        return [self._convert_individual_to_dict(hof) for hof in self.halloffame]
+
     def grid(self, parameter_grid):
         self.parameter_grid = parameter_grid
-        names = parameter_grid.keys()
+        self.names = parameter_grid.keys()
         maxints = [len(possible_values) - 1 for possible_values in parameter_grid.values()]
 
         creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -85,7 +89,7 @@ class EAParameterGrid():
         logbook = tools.Logbook()
         logbook.header = ['gen', 'nevals'] + (self.stats.fields if self.stats else [])
 
-        yield from self.population_evaluation(names, population)
+        yield from self._population_evaluation(population)
 
         if self.halloffame is not None:
             self.halloffame.update(population)
@@ -104,7 +108,7 @@ class EAParameterGrid():
             offspring = varAnd(offspring, toolbox, self.cxpb, self.mutpb)
 
             # Evaluate the individuals with an invalid fitness
-            yield from self.population_evaluation(names, offspring)
+            yield from self._population_evaluation(offspring)
 
             # Update the hall of fame with the generated individuals
             if self.halloffame is not None:
@@ -121,23 +125,30 @@ class EAParameterGrid():
 
         return population, logbook
 
-    def population_evaluation(self, names, population):
+    def _population_evaluation(self, population):
         if self.batch_evaluate:
             batch_list = []
+            batch_set = set()
             for ind in population:
                 if self.skip_evaluated and self._history_check(ind):
                     ind.fitness.values = self.history_dict[tuple(ind)]
                     continue
                 else:
                     batch_list.append(ind)
-            yield [self._convert_individual_to_dict(names, ind) for ind in batch_list]
-            for k,v in zip(batch_list,self.current_fitness):
-                k.fitness.values = v,
+                    batch_set.add(tuple(ind))
+            if self.skip_evaluated:
+                yield [self._convert_individual_to_dict(ind) for ind in batch_set]
+            else:
+                yield [self._convert_individual_to_dict(ind) for ind in batch_list]
+            for index, k in enumerate(batch_list):
+                k.fitness.values = (self.current_fitness[str(self._convert_individual_to_dict(k))],) \
+                    if self.skip_evaluated else (self.current_fitness[index],)
+                self.history_dict[tuple(k)] = k.fitness.values
         else:
             for ind in population:
                 if self.skip_evaluated and self._history_check(ind):
                     ind.fitness.values = self.history_dict[tuple(ind)]
                     continue
-                yield self._convert_individual_to_dict(names, ind)
+                yield self._convert_individual_to_dict(ind)
                 ind.fitness.values = self.current_fitness,
                 self.history_dict[tuple(ind)] = ind.fitness.values
