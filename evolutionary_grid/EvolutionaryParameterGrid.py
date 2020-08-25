@@ -118,11 +118,27 @@ class EAParameterGrid():
 
         # Begin the generational process
         for gen in range(1, self.generation + 1):
-            # Select the next generation individuals
-            offspring = toolbox.select(population, len(population))
-
-            # Vary the pool of individuals
-            offspring = varAnd(offspring, toolbox, self.cxpb, self.mutpb)
+            if self.batch_evaluate and self.skip_evaluated:
+                new_offsprings = []
+                offspring_set = set()
+                while len(new_offsprings) < len(population):
+                    # Select the next generation individuals
+                    offspring = toolbox.select(population, len(population))
+                    # Vary the pool of individuals
+                    offspring = varAnd(offspring, toolbox, self.cxpb, self.mutpb)
+                    for o in offspring:
+                        if len(new_offsprings) >= len(population):
+                            break
+                        if tuple(o) in offspring_set or tuple(o) in self.history_dict:
+                            continue
+                        offspring_set.add(tuple(o))
+                        new_offsprings.append(o)
+                offspring = new_offsprings
+            else:
+                # Select the next generation individuals
+                offspring = toolbox.select(population, len(population))
+                # Vary the pool of individuals
+                offspring = varAnd(offspring, toolbox, self.cxpb, self.mutpb)
 
             # Evaluate the individuals with an invalid fitness
             yield from self._population_evaluation(offspring)

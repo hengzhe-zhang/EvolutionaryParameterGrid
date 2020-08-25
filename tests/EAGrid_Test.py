@@ -31,8 +31,8 @@ class TestEvolutionarySearch(unittest.TestCase):
                 evaluation_time += 1
             grid.set_fitness(fitness_list)
         print(evaluation_time)
-        self.assertEqual(grid.halloffame[0].fitness.values[0], 936)
-        self.assertEqual(evaluation_time, 574)
+        self.assertEqual(grid.halloffame[0].fitness.values[0], 979)
+        self.assertEqual(evaluation_time, 2550)
 
     def test_search_full(self):
         random.seed(0)
