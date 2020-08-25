@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='EvolutionaryParameterGrid',
-    version='0.0.3',
+    version='0.0.4',
     author='ZhangHengzhe',
     author_email='',
     description='Use evolutionary algorithms instead of GridParameter in scikit-learn.',
